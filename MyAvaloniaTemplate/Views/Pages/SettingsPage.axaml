@@ -1,0 +1,28 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:viewModels="clr-namespace:MyAvaloniaTemplate.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MyAvaloniaTemplate.Views.Pages.SettingsPage"
+             x:DataType="viewModels:SettingsPageViewModel">
+    <DockPanel LastChildFill="True">
+        <Panel DockPanel.Dock="Bottom" Background="{DynamicResource MaterialBackgroundBrush}" Height="48">
+            <Panel Margin="12 0">
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal" Spacing="12">
+                    <avalonia:MaterialIcon Kind="WhiteBalanceSunny" />
+                    <ToggleSwitch Name="ThemeSwitch" IsChecked="{Binding EditableSettings.DarkMode}"
+                                  IsCheckedChanged="ToggleButton_OnIsCheckedChanged" />
+                    <avalonia:MaterialIcon Kind="MoonWaningCrescent" />
+                </StackPanel>
+                <Button HorizontalAlignment="Right" VerticalAlignment="Center">SAVE</Button>
+            </Panel>
+        </Panel>
+        <Panel>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                Modify Views/Pages/SettingsPage.axaml to edit this page.
+            </TextBlock>
+        </Panel>
+    </DockPanel>
+</UserControl>

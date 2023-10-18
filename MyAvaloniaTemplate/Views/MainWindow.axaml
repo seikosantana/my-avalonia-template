@@ -1,0 +1,65 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MyAvaloniaTemplate.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:assists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+        xmlns:pages="clr-namespace:MyAvaloniaTemplate.Views.Pages"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="MyAvaloniaTemplate.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="MyAvaloniaTemplate">
+    <Window.Styles>
+        <Style Selector="TabControl#MainTabControl /template/ Panel#PART_TabsPanel">
+            <Setter Property="Width" Value="52" />
+        </Style>
+        <Style Selector="TabControl#MainTabControl TabItem">
+            <Setter Property="MinWidth" Value="52" />
+        </Style>
+        <Style Selector="TabControl#MainTabControl TabItem avalonia|MaterialIcon">
+            <Setter Property="Width" Value="24" />
+            <Setter Property="Height" Value="24" />
+        </Style>
+        <Style Selector="TabControl#MainTabControl TabItem:selected /template/ Rectangle#PART_Separator">
+            <Setter Property="Width" Value="4" />
+        </Style>
+        <Style Selector="ListBox#MainWindowNav ListBoxItem:selected">
+            <Setter Property="Foreground" Value="{DynamicResource MaterialPrimaryMidBrush}"></Setter>
+        </Style>
+        <Style Selector="ListBox#MainWindowNav ListBoxItem:not(:selected)">
+            <Setter Property="Foreground" Value="{DynamicResource MaterialBodyBrush}"></Setter>
+            <Setter Property="Opacity" Value="0.38"></Setter>
+        </Style>
+        <Style Selector="ListBox#MainWindowNav ListBoxItem > avalonia|MaterialIcon">
+            <Setter Property="Width" Value="24"></Setter>
+            <Setter Property="Height" Value="24"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+        </Style>
+    </Window.Styles>
+    <DockPanel LastChildFill="True">
+        <StackPanel ZIndex="2" DockPanel.Dock="Bottom" Background="#d97c3b" Height="24" Orientation="Horizontal">
+            <Panel Margin="6 0">
+                <TextBlock Foreground="White" Text="Ready" VerticalAlignment="Center" />
+            </Panel>
+        </StackPanel>
+        <Border assists:ShadowAssist.ShadowDepth="Depth3" assists:ShadowAssist.Darken="False" ZIndex="1"
+                DockPanel.Dock="Left">
+            <ListBox Name="MainWindowNav" SelectedIndex="{Binding ActiveNavIndex, Mode=TwoWay}">
+                <ListBoxItem>
+                    <avalonia:MaterialIcon Kind="MonitorDashboard" />
+                </ListBoxItem>
+                <!-- TODO: Add more items -->
+                <ListBoxItem>
+                    <avalonia:MaterialIcon Kind="Cog" />
+                </ListBoxItem>
+            </ListBox>
+        </Border>
+        <Carousel SelectedIndex="{Binding ActiveNavIndex, Mode=TwoWay}">
+            <pages:DashboardPage />
+            <!-- TODO: Add more pages -->
+            <pages:SettingsPage />
+        </Carousel>
+    </DockPanel>
+</Window>

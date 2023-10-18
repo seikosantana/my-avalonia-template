@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="MyAvaloniaTemplate/App.axaml" value="MyAvaloniaTemplate/MyAvaloniaTemplate.csproj" />
+        <entry key="MyAvaloniaTemplate/Views/MainWindow.axaml" value="MyAvaloniaTemplate/MyAvaloniaTemplate.csproj" />
+        <entry key="MyAvaloniaTemplate/Views/Pages/DashboardPage.axaml" value="MyAvaloniaTemplate/MyAvaloniaTemplate.csproj" />
+        <entry key="MyAvaloniaTemplate/Views/Pages/Page1.axaml" value="MyAvaloniaTemplate/MyAvaloniaTemplate.csproj" />
+        <entry key="MyAvaloniaTemplate/Views/Pages/SettingsPage.axaml" value="MyAvaloniaTemplate/MyAvaloniaTemplate.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
