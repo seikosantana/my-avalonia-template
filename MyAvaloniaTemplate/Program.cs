@@ -14,20 +14,8 @@ class Program
     [STAThread]
     public static void Main(string[] args)
     {
-#if DEBUG
-        if (Design.IsDesignMode)
-        {
-            Ioc.Default.ConfigureApplicationServices(true);
-        }
-        else
-        {
-            Ioc.Default.ConfigureApplicationServices();
-        }
-#else
-        Ioc.Default.ConfigureApplicationServices();
-#endif
-        Host host = new Host();
-        host.Run(args);
+        BuildAvaloniaApp()
+            .StartWithClassicDesktopLifetime(args);
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
