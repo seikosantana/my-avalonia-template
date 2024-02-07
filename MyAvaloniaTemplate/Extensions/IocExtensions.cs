@@ -13,22 +13,6 @@ public static class IocExtensions
     private static bool _hasConfiguredIoc;
     private static bool _hasCreatedBackgroundServices;
 
-    public static async Task ConfigureAsync(this Ioc ioc,
-        Func<IServiceCollection, Task> configureAction)
-    {
-        if (_hasConfiguredIoc)
-        {
-            Console.WriteLine("Ioc has already been configured");
-            return;
-        }
-
-        var serviceCollection = new ServiceCollection();
-        await configureAction(serviceCollection);
-        var serviceProvider = serviceCollection.BuildServiceProvider();
-        ioc.ConfigureServices(serviceProvider);
-        _hasConfiguredIoc = true;
-    }
-
     public static void Configure(this Ioc ioc,
         Action<IServiceCollection> configureAction)
     {

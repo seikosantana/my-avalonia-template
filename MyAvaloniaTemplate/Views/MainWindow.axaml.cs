@@ -12,7 +12,7 @@ public partial class MainWindow : AppWindow
 #if DEBUG
         if (Design.IsDesignMode)
         {
-            App.ConfigureServicesAsync().GetAwaiter().GetResult();
+            App.ConfigureServices();
             Ioc.Default.CreateBackgroundServices();
             var vm = Ioc.Default.GetMainViewModel();
             DataContext = vm;

@@ -17,7 +17,7 @@ public partial class SettingsPage : UserControl
 #if DEBUG
         if (Design.IsDesignMode)
         {
-            App.ConfigureServicesAsync().GetAwaiter().GetResult();
+            App.ConfigureServices();
             Ioc.Default.CreateBackgroundServices();
             var vm = Ioc.Default.GetMainViewModel();
             DataContext = vm.SettingsPageViewModel;
