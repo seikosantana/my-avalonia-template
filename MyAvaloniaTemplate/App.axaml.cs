@@ -26,7 +26,7 @@ public partial class App : Application
 
     public AppWindow? ActiveWindow { get; set; }
 
-    public static async Task ConfigureServices(bool? demo = null)
+    public static async Task ConfigureServicesAsync(bool? demo = null)
     {
         await Ioc.Default.ConfigureAsync(async services =>
         {
@@ -71,7 +71,7 @@ public partial class App : Application
                 await Task.Delay(1000);
 
                 // Configure and start services
-                await ConfigureServices();
+                await ConfigureServicesAsync();
                 Ioc.Default.CreateBackgroundServices();
 
                 var logger = Ioc.Default.GetRequiredService<ILogger<App>>();
