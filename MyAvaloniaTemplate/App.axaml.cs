@@ -1,13 +1,18 @@
 using System;
+using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Material.Colors;
 using Material.Styles.Themes;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using MyAvaloniaTemplate.Abstractions;
 using MyAvaloniaTemplate.Extensions;
-using MyAvaloniaTemplate.Models.Settings;
+using MyAvaloniaTemplate.Services;
+using MyAvaloniaTemplate.ViewModels;
 using MyAvaloniaTemplate.Views;
 
 namespace MyAvaloniaTemplate;
@@ -19,43 +24,95 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
+    public AppWindow? ActiveWindow { get; set; }
+
+    public static async Task ConfigureServices(bool? demo = null)
+    {
+        await Ioc.Default.ConfigureAsync(async services =>
+        {
+            services.AddSingleton<MainViewModel>();
+            services.AddLogging(logging =>
+            {
+                logging.ClearProviders();
+                logging.AddConsole();
+                if (OperatingSystem.IsWindows())
+                {
+                    logging.AddEventLog();
+                }
+
+                logging.SetMinimumLevel(LogLevel.Information);
+            });
+
+            if ((demo.HasValue && demo.Value) || (!demo.HasValue && Design.IsDesignMode))
+            {
+                services.AddSingleton<ISettingsService, DummySettingsService>();
+                // TODO: Initialize Ioc with demo services 
+            }
+            else
+            {
+                // TODO: Initialize Ioc with production services
+                services.AddSingleton<ISettingsService, SettingsJsonService>();
+            }
+        });
+    }
+
     public static event EventHandler<IApplicationLifetime?>? FrameworkInitializationCompleted;
 
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var vm = Ioc.Default.GetMainViewModel();
-            var settings = Ioc.Default.GetRequiredService<ISettingsService<SettingsModel>>();
+            desktop.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            SplashWindow splashWindow = new SplashWindow();
 
-            var theme = Theme.Create(settings.Settings.DarkMode ? Theme.Dark : Theme.Light,
-                SwatchHelper.Lookup[(MaterialColor)PrimaryColor.Blue],
-                SwatchHelper.Lookup[(MaterialColor)SecondaryColor.Orange]);
-
-            var materialTheme = this.LocateMaterialTheme<MaterialTheme>();
-
-            materialTheme.CurrentThemeChanged.Subscribe(t =>
+            async void OnSplashWindowOnOpened(object? o, EventArgs eventArgs)
             {
-                // TODO: Set resource for new theme if necessary
-            });
+                // Give it some time to display Window
+                await Task.Delay(1000);
 
-            materialTheme.PropertyChanged += (sender, args) =>
-            {
-                if (args.Property == MaterialTheme.BaseThemeProperty)
+                // Configure and start services
+                await ConfigureServices();
+                Ioc.Default.CreateBackgroundServices();
+
+                var logger = Ioc.Default.GetRequiredService<ILogger<App>>();
+                logger.LogInformation("App starting");
+
+                var settings = Ioc.Default.GetRequiredService<ISettingsService>();
+
+                var theme = Theme.Create(settings.Settings.DarkMode ? Theme.Dark : Theme.Light,
+                    SwatchHelper.Lookup[(MaterialColor)PrimaryColor.Blue],
+                    SwatchHelper.Lookup[(MaterialColor)SecondaryColor.Orange]);
+                var materialTheme = this.LocateMaterialTheme<MaterialTheme>();
+                materialTheme.CurrentThemeChanged.Subscribe(t =>
                 {
-                    // TODO: Set resource for new theme if necessary
-                }
-            };
+                    // TODO:React on theme change
+                });
+                materialTheme.PropertyChanged += (sender, args) =>
+                {
+                    // TODO: React on theme change
+                };
+                materialTheme.CurrentTheme = theme;
 
-            materialTheme.CurrentTheme = theme;
+                var mainViewModel = Ioc.Default.GetRequiredService<MainViewModel>();
+                MainWindow mainWindow = new MainWindow { DataContext = mainViewModel };
+                await Task.Delay(1000);
+                splashWindow.Close();
+                desktop.MainWindow = mainWindow;
+                mainWindow.Show();
+                FrameworkInitializationCompleted?.Invoke(this, ApplicationLifetime);
+                base.OnFrameworkInitializationCompleted();
+            }
 
-            desktop.MainWindow = new MainWindow
+            desktop.Exit += (sender, args) =>
             {
-                DataContext = vm,
+                var logger = Ioc.Default.GetRequiredService<ILogger<App>>();
+                logger.LogInformation("Cleaning up services before exiting");
+                Ioc.Default.CleanupBackgroundServices();
+                logger.LogInformation("Finished cleaning up services.");
             };
-        }
 
-        FrameworkInitializationCompleted?.Invoke(this, ApplicationLifetime);
-        base.OnFrameworkInitializationCompleted();
+            splashWindow.Opened += OnSplashWindowOnOpened;
+            splashWindow.Show();
+        }
     }
 }
