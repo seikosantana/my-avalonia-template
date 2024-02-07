@@ -16,7 +16,7 @@
                                   IsCheckedChanged="ToggleButton_OnIsCheckedChanged" />
                     <avalonia:MaterialIcon Kind="MoonWaningCrescent" />
                 </StackPanel>
-                <Button HorizontalAlignment="Right" VerticalAlignment="Center">SAVE</Button>
+                <Button HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding SaveCommand}">SAVE</Button>
             </Panel>
         </Panel>
         <Panel>
