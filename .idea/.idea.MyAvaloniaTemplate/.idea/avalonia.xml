@@ -8,6 +8,7 @@
         <entry key="MyAvaloniaTemplate/Views/Pages/DashboardPage.axaml" value="MyAvaloniaTemplate/MyAvaloniaTemplate.csproj" />
         <entry key="MyAvaloniaTemplate/Views/Pages/Page1.axaml" value="MyAvaloniaTemplate/MyAvaloniaTemplate.csproj" />
         <entry key="MyAvaloniaTemplate/Views/Pages/SettingsPage.axaml" value="MyAvaloniaTemplate/MyAvaloniaTemplate.csproj" />
+        <entry key="MyAvaloniaTemplate/Views/SplashWindow.axaml" value="MyAvaloniaTemplate/MyAvaloniaTemplate.csproj" />
       </map>
     </option>
   </component>
