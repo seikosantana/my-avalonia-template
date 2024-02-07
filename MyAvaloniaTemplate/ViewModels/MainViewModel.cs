@@ -6,7 +6,7 @@ namespace MyAvaloniaTemplate.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
-    public ISettingsService<SettingsModel> SettingsService { get; }
+    public ISettingsService SettingsService { get; }
 
     [ObservableProperty]
     private int _activeNavIndex;
@@ -14,7 +14,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     private SettingsPageViewModel _settingsPageViewModel;
 
-    public MainViewModel(ISettingsService<SettingsModel> settingsService)
+    public MainViewModel(ISettingsService settingsService)
     {
         SettingsService = settingsService;
         SettingsPageViewModel = new SettingsPageViewModel(settingsService);
