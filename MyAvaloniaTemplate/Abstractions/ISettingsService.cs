@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MyAvaloniaTemplate.Models.Settings;
 
 namespace MyAvaloniaTemplate.Abstractions;
 
-public interface ISettingsService<TSettings>
+public interface ISettingsService
 {
-    public TSettings Settings { get; }
-    public Task UpdateSettings(TSettings settings);
+    public SettingsModel Settings { get; }
+    public Task UpdateSettings(SettingsModel settings);
 
-    public event EventHandler<TSettings>? SettingsUpdated;
+    public event EventHandler<SettingsModel>? SettingsUpdated;
 }
