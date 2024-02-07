@@ -4,7 +4,7 @@ using MyAvaloniaTemplate.Extensions;
 
 namespace MyAvaloniaTemplate.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindow : AppWindow
 {
     public MainWindow()
     {
@@ -12,7 +12,7 @@ public partial class MainWindow : Window
 #if DEBUG
         if (Design.IsDesignMode)
         {
-            Ioc.Default.ConfigureApplicationServices(true);
+            App.ConfigureServicesAsync().GetAwaiter().GetResult();
             Ioc.Default.CreateBackgroundServices();
             var vm = Ioc.Default.GetMainViewModel();
             DataContext = vm;
