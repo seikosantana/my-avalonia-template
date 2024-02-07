@@ -12,7 +12,7 @@ using MyAvaloniaTemplate.Models.Settings;
 
 namespace MyAvaloniaTemplate.Services;
 
-public class SettingsJsonService : ISettingsService<SettingsModel>
+public class SettingsJsonService : ISettingsService
 {
     public SettingsModel Settings { get; private set; }
     private readonly string _jsonPath = Path.Join(AppDomain.CurrentDomain.BaseDirectory, "settings.jsonc");
