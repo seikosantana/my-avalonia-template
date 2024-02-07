@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MyAvaloniaTemplate.Abstractions;
 using MyAvaloniaTemplate.Extensions;
 using MyAvaloniaTemplate.Models.Settings;
@@ -7,12 +9,17 @@ namespace MyAvaloniaTemplate.ViewModels;
 
 public partial class SettingsPageViewModel : ViewModelBase
 {
-    public ISettingsService<SettingsModel> SettingsService { get; }
+    private ISettingsService SettingsService { get; }
 
-    [ObservableProperty]
-    private SettingsModel _editableSettings;
+    [ObservableProperty] private SettingsModel _editableSettings;
 
-    public SettingsPageViewModel(ISettingsService<SettingsModel> settingsService)
+    [RelayCommand]
+    private async Task Save()
+    {
+        await SettingsService.UpdateSettings(EditableSettings);
+    }
+
+    public SettingsPageViewModel(ISettingsService settingsService)
     {
         SettingsService = settingsService;
         EditableSettings = settingsService.Settings.JsonClone()!;
@@ -21,5 +28,4 @@ public partial class SettingsPageViewModel : ViewModelBase
             EditableSettings = settingsService.Settings.JsonClone()!;
         };
     }
-
 }
