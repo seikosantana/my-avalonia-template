@@ -8,7 +8,7 @@ using Material.Styles.Themes.Base;
 using MyAvaloniaTemplate.Extensions;
 
 namespace MyAvaloniaTemplate.Views.Pages;
-
+ 
 public partial class SettingsPage : UserControl
 {
     public SettingsPage()
@@ -17,7 +17,7 @@ public partial class SettingsPage : UserControl
 #if DEBUG
         if (Design.IsDesignMode)
         {
-            Ioc.Default.ConfigureApplicationServices(true);
+            App.ConfigureServicesAsync().GetAwaiter().GetResult();
             Ioc.Default.CreateBackgroundServices();
             var vm = Ioc.Default.GetMainViewModel();
             DataContext = vm.SettingsPageViewModel;
