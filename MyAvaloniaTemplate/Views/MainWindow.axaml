@@ -59,7 +59,7 @@
         <Carousel SelectedIndex="{Binding ActiveNavIndex, Mode=TwoWay}">
             <pages:DashboardPage />
             <!-- TODO: Add more pages -->
-            <pages:SettingsPage />
+            <pages:SettingsPage DataContext="{Binding SettingsPageViewModel}" />
         </Carousel>
     </DockPanel>
 </Window>
